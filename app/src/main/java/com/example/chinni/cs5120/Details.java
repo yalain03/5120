@@ -1,6 +1,7 @@
 package com.example.chinni.cs5120;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,21 +26,28 @@ public class Details extends Fragment {
 
 
     private String TAG = MatchSummary.class.getSimpleName();
-    String url = "http://mapps.cricbuzz.com/cbzios/match/22466/scorecard.json";
+    String url = "http://mapps.cricbuzz.com/cbzios/match/livematches";
     String summary_url;
     private ProgressDialog pDialog;
     HashMap<String, String> summary_hp = new HashMap<String, String>();
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.details,container,false);
+        new GetContacts(getActivity(), rootView).execute();
         return rootView;
     }
 
 
     private class GetContacts extends AsyncTask<Void, Void, Void> {
+
+        private Context mContext;
+        private View rootView;
+        public GetContacts(Context context, View rootView){
+            this.mContext=context;
+            this.rootView=rootView;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -56,16 +65,29 @@ public class Details extends Fragment {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(summary_url);
+            String jsonStr = sh.makeServiceCall(url);
 
-            Log.e(TAG, "Response from url: " + jsonStr);
+            //Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    String score = jsonObj.getString("score");
-                    summary_hp.put("score", score);
-                    Log.e(TAG, "score"+score);
+                    JSONArray matches = jsonObj.getJSONArray("matches");
+                    String status = matches.getJSONObject(0).getJSONObject("header").getString("status");
+
+                    JSONArray batsmans = matches.getJSONObject(0).getJSONArray("batsman");
+                    String b1_name = batsmans.getJSONObject(0).getString("name");
+                    String b1_runs = batsmans.getJSONObject(0).getString("r");
+                    String b1_4s = batsmans.getJSONObject(0).getString("4s");
+                    String b1_6s = batsmans.getJSONObject(0).getString("6s");
+
+
+                    summary_hp.put("status", status);
+                    summary_hp.put("b1_name",b1_name);
+                    summary_hp.put("b1_runs",b1_runs);
+                    summary_hp.put("b1_4s",b1_4s);
+                    summary_hp.put("b1_6s",b1_6s);
+                    Log.e(TAG, "status"+status);
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     /* runOnUiThread(new Runnable() {
@@ -105,10 +127,18 @@ public class Details extends Fragment {
             /**
              * Updating parsed JSON data into ListView
              * */
-            TextView tv = (TextView)findViewById(R.id.summaryText);
-            String msg = summary_hp.get("score");
-            Log.e(TAG, "msg"+msg);
-            //tv.setText(msg.replace("amp;", ""));
+            //TextView tv = (TextView)findViewById(R.id.summaryText);
+            TextView details_view = (TextView) rootView.findViewById(R.id.status);
+            TextView b1_name = (TextView)rootView.findViewById(R.id.b1_name);
+            TextView b1_runs = (TextView)rootView.findViewById(R.id.b1_runs);
+            TextView b1_4s = (TextView)rootView.findViewById(R.id.b1_4s);
+            TextView b1_6s = (TextView)rootView.findViewById(R.id.b1_6s);
+
+            details_view.setText(summary_hp.get("status"));
+            b1_name.setText(summary_hp.get("b1_name"));
+            b1_runs.setText(summary_hp.get("b1_runs"));
+            b1_4s.setText(summary_hp.get("b1_4s"));
+            b1_6s.setText(summary_hp.get("b1_6s"));
         }
 
     }

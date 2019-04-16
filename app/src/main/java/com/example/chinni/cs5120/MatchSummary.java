@@ -84,7 +84,7 @@ public class MatchSummary extends AppCompatActivity {
         String unique_id = i.getStringExtra("unique_id");
         summary_url = url+"&unique_id="+unique_id;
 
-        new GetContacts().execute();
+        //new GetContacts().execute();
         String msg = summary_hp.get("score");
 
         TextView tv = (TextView)findViewById(R.id.summaryText);
@@ -126,78 +126,4 @@ public class MatchSummary extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(MatchSummary.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            HttpHandler sh = new HttpHandler();
-
-            // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(summary_url);
-
-            Log.e(TAG, "Response from url: " + jsonStr);
-
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                        String score = jsonObj.getString("score");
-                        summary_hp.put("score", score);
-                        Log.e(TAG, "score"+score);
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    });
-
-                }
-            } else {
-                Log.e(TAG, "Couldn't get json from server.");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
-
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
-            TextView tv = (TextView)findViewById(R.id.summaryText);
-            String msg = summary_hp.get("score");
-            Log.e(TAG, "msg"+msg);
-            //tv.setText(msg.replace("amp;", ""));
-        }
-
-    }
 }
