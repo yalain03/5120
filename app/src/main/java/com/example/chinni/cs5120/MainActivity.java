@@ -1,14 +1,11 @@
 package com.example.chinni.cs5120;
 
-import android.support.v7.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -51,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?>adapter, View v, int position, long a){
                 Intent intent = new Intent(MainActivity.this,MatchSummary.class);
-                String unique_id = ((TextView) v.findViewById(R.id.unique_id)).getText().toString();
-                intent.putExtra("unique_id", unique_id);
+                String match_id = ((TextView) v.findViewById(R.id.match_id)).getText().toString();
+                intent.putExtra("match_id", match_id);
                 startActivity(intent);
             }
         });
@@ -81,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(url);
 
-            //Log.e(TAG, "Response from url: " + jsonStr);
-
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
@@ -96,14 +91,15 @@ public class MainActivity extends AppCompatActivity {
 
                         String team1 = c.getJSONObject("team1").getString("name");
                         String team2 = c.getJSONObject("team2").getString("name");
-                        String id = c.getString("match_id");
+                        //String id = c.getString("match_id");
                         String type = c.getString("series_name");
 
                         // tmp hash map for single contact
                         HashMap<String, String> contact = new HashMap<>();
 
                         // adding each child node to HashMap key => value
-                        contact.put("id", id);
+                        contact.put("match_id", Integer.toString(i));
+                        Log.e(TAG, "i value is "+i);
                         contact.put("team2", team2+" vs");
                         contact.put("team1", team1);
                         contact.put("type", type);
@@ -152,10 +148,9 @@ public class MainActivity extends AppCompatActivity {
              * */
             ListAdapter adapter = new SimpleAdapter(
                     MainActivity.this, contactList,
-                    R.layout.list_item, new String[]{"team2", "team1",
-                    "type","id"}, new int[]{R.id.name,
-                    R.id.title, R.id.desc,R.id.unique_id});
-
+                    R.layout.list_item2, new String[]{"team2", "team1",
+                    "type","match_id"}, new int[]{R.id.name,
+                    R.id.title, R.id.desc,R.id.match_id});
             lv.setAdapter(adapter);
         }
 

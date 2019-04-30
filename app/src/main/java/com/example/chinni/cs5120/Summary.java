@@ -2,6 +2,7 @@ package com.example.chinni.cs5120;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -23,15 +24,16 @@ public class Summary extends Fragment {
 
     private String TAG = MatchSummary.class.getSimpleName();
     String url = "http://mapps.cricbuzz.com/cbzios/match/livematches";
-    String summary_url;
-    private ProgressDialog pDialog;
     HashMap<String, String> summary_hp = new HashMap<String, String>();
+    public int index;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.summary,container,false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.summary, container, false);
         new Summary.GetSummary(getActivity(), rootView).execute();
+        String id = getArguments().getString("id");
+        index = Integer.parseInt(id);
         return rootView;
     }
 
@@ -39,20 +41,15 @@ public class Summary extends Fragment {
 
         private Context mContext;
         private View rootView;
-        public GetSummary(Context context, View rootView){
-            this.mContext=context;
-            this.rootView=rootView;
+
+        public GetSummary(Context context, View rootView) {
+            this.mContext = context;
+            this.rootView = rootView;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
-            // pDialog = new ProgressDialog(Details.this);
-            // pDialog.setMessage("Please wait...");
-            // pDialog.setCancelable(false);
-            // pDialog.show();
-
         }
 
         @Override
@@ -69,42 +66,30 @@ public class Summary extends Fragment {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     JSONArray matches = jsonObj.getJSONArray("matches");
 
-                    String status = matches.getJSONObject(0).getJSONObject("header").getString("status");
-                    String series_name = matches.getJSONObject(0).getString("series_name");
-                    String toss = matches.getJSONObject(0).getJSONObject("header").getString("toss");
-                    String type = matches.getJSONObject(0).getJSONObject("header").getString("type");
+                    String status = matches.getJSONObject(index).getJSONObject("header").getString("state_title");
+                    String series_name = matches.getJSONObject(index).getString("series_name");
+                    String desc = matches.getJSONObject(index).getJSONObject("header").getString("match_desc");
+                    String type = matches.getJSONObject(index).getJSONObject("header").getString("type");
+                    String mom = matches.getJSONObject(index).getJSONObject("header").getJSONArray("momNames").getString(0);
+                    String team1 = matches.getJSONObject(index).getJSONObject("team1").getString("name");
+                    String team2 = matches.getJSONObject(index).getJSONObject("team2").getString("name");
+
 
 
                     summary_hp.put("status", status);
-                    summary_hp.put("series_name",series_name);
-                    summary_hp.put("toss",toss);
-                    summary_hp.put("type",type);
-                    Log.e(TAG, "status"+status);
+                    summary_hp.put("series_name", series_name);
+                    summary_hp.put("desc", desc);
+                    summary_hp.put("type", type);
+                    summary_hp.put("mom", mom);
+                    summary_hp.put("team1", team1);
+                    summary_hp.put("team2", team2);
+
+                    Log.e(TAG, "index " + index);
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    /* runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    }); */
-
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
-                /* runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                }); */
-
             }
 
             return null;
@@ -113,22 +98,23 @@ public class Summary extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
-            //if (pDialog.isShowing())
-            //  pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
-            //TextView tv = (TextView)findViewById(R.id.summaryText);
-            TextView series_name = (TextView) rootView.findViewById(R.id.series_name);
-            TextView toss = (TextView) rootView.findViewById(R.id.toss);
-            TextView status = (TextView) rootView.findViewById(R.id.status);
-            TextView type = (TextView) rootView.findViewById(R.id.type);
 
-            series_name.setText(summary_hp.get("series_name"));
-            toss.setText(summary_hp.get("toss"));
+            TextView status = (TextView) rootView.findViewById(R.id.status);
+            TextView series_name = (TextView) rootView.findViewById(R.id.series_name);
+            TextView desc = (TextView) rootView.findViewById(R.id.desc);
+            TextView type = (TextView) rootView.findViewById(R.id.type);
+            TextView mom = (TextView) rootView.findViewById(R.id.mom);
+            TextView team1 = (TextView) rootView.findViewById(R.id.team1);
+            TextView team2 = (TextView) rootView.findViewById(R.id.team2);
+
+
             status.setText(summary_hp.get("status"));
+            series_name.setText(summary_hp.get("series_name"));
+            desc.setText(summary_hp.get("desc"));
             type.setText(summary_hp.get("type"));
+            mom.setText(summary_hp.get("mom"));
+            team1.setText(summary_hp.get("team1"));
+            team2.setText(summary_hp.get("team2"));
 
         }
 

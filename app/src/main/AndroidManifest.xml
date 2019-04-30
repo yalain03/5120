@@ -23,6 +23,7 @@
         <activity android:name="com.example.chinni.cs5120.CricketMenu" />
         <activity android:name="com.example.chinni.cs5120.PlayersList" />
         <activity android:name="com.example.chinni.cs5120.PlayerDetails" />
+        <activity android:name="com.example.chinni.cs5120.PlayerActivity" />
         <activity android:name="com.example.chinni.cs5120.News"></activity>
     </application>
 

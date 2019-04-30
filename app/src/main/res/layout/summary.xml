@@ -4,31 +4,166 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/series_name"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="" />
+        android:paddingTop="25dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/status_name"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text="Status"
+            android:paddingLeft="8dp"
+            android:textColor="@color/design_default_color_primary_dark"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text=""
+            android:padding="5dp"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/toss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="" />
-
+        android:id="@+id/batting"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:text="TEAMS"
+        android:background="@android:color/holo_blue_dark"
+        android:textSize="18sp"
+        android:gravity="center_horizontal"/>
     <TextView
-        android:id="@+id/status"
+        android:id="@+id/team1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="" />
-
+        android:text=""
+        android:padding="10dp"
+        android:textSize="24sp"/>
     <TextView
-        android:id="@+id/type"
+        android:id="@+id/team2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="" />
+        android:text=""
+        android:padding="10dp"
+        android:textSize="24sp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/mom_name"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text="Player of Match"
+            android:paddingLeft="8dp"
+            android:textColor="@color/design_default_color_primary_dark"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/mom"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text=""
+            android:padding="5dp"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/series"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text="Series"
+            android:paddingLeft="8dp"
+            android:textColor="@color/design_default_color_primary_dark"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/series_name"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text=""
+            android:padding="5dp"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/desc_name"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text="Match Desc"
+            android:paddingLeft="8dp"
+            android:textColor="@color/design_default_color_primary_dark"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text=""
+            android:padding="5dp"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/type_name"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text="Type"
+            android:paddingLeft="8dp"
+            android:textColor="@color/design_default_color_primary_dark"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text=""
+            android:padding="5dp"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
 </LinearLayout>

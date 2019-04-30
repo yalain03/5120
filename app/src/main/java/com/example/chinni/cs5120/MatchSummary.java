@@ -1,6 +1,7 @@
 package com.example.chinni.cs5120;
 
 //import android.app.ActionBar;
+
 import android.support.v7.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -30,26 +31,32 @@ public class MatchSummary extends AppCompatActivity {
     Summary summary;
 
     private String TAG = MatchSummary.class.getSimpleName();
-    String url = "http://mapps.cricbuzz.com/cbzios/match/";
-    String summary_url;
-    private ProgressDialog pDialog;
     HashMap<String, String> summary_hp = new HashMap<String, String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Intent i = getIntent();
+        String id = i.getStringExtra("match_id");
+        int index = Integer.parseInt(id);
+        Bundle bundle = new Bundle();
+        bundle.putString("id", Integer.toString(index));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         details = new Details();
         summary = new Summary();
+        details.setArguments(bundle);
+        summary.setArguments(bundle);
 
-        // showing fragment1 in FRIENDS tab by default
-        getSupportFragmentManager().beginTransaction().add(R.id.container,details).commit();
 
-        TabLayout tabs = (TabLayout)findViewById(R.id.tabs);
-        // Adding two Tabs FRIENDS and SETTINGS
+        getSupportFragmentManager().beginTransaction().add(R.id.container, details).commit();
+
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+
         tabs.addTab(tabs.newTab().setText("SCORE CARD"));
         tabs.addTab(tabs.newTab().setText("SUMMARY"));
 
@@ -59,13 +66,12 @@ public class MatchSummary extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 Fragment selected = null;
-                if(position==0){
+                if (position == 0) {
                     selected = details;
-                }
-                else if(position==1) {
+                } else if (position == 1) {
                     selected = summary;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container,selected).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, selected).commit();
             }
 
             @Override
@@ -79,22 +85,12 @@ public class MatchSummary extends AppCompatActivity {
             }
         });
 
-
-        Intent i = getIntent();
-        String unique_id = i.getStringExtra("unique_id");
-        summary_url = url+"&unique_id="+unique_id;
-
-        //new GetContacts().execute();
-        String msg = summary_hp.get("score");
-
-        TextView tv = (TextView)findViewById(R.id.summaryText);
-       // tv.setText(msg);
     }
 
     // Setting Action bar menu layout
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -104,19 +100,19 @@ public class MatchSummary extends AppCompatActivity {
         int curId = item.getItemId();
         switch (curId) {
             case R.id.menu_home:
-                Intent intent1 = new Intent(this,CricketMenu.class);
+                Intent intent1 = new Intent(this, CricketMenu.class);
                 startActivity(intent1);
                 break;
             case R.id.matches_item:
-                Intent intent2 = new Intent(this,MainActivity.class);
+                Intent intent2 = new Intent(this, MainActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.stats_item:
-                Intent intent3 = new Intent(this,PlayersList.class);
+                Intent intent3 = new Intent(this, PlayersList.class);
                 startActivity(intent3);
                 break;
             case R.id.news_item:
-                Intent intent4 = new Intent(this,News.class);
+                Intent intent4 = new Intent(this, News.class);
                 startActivity(intent4);
                 break;
 

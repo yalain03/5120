@@ -50,7 +50,7 @@ public class News extends AppCompatActivity {
         lv.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?>adapter, View v, int position, long a){
-                String unique_id = ((TextView) v.findViewById(R.id.unique_id)).getText().toString();
+                String unique_id = ((TextView) v.findViewById(R.id.match_id)).getText().toString();
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(unique_id));
                 startActivity(browserIntent);
             }
@@ -151,9 +151,9 @@ public class News extends AppCompatActivity {
              * */
             ListAdapter adapter = new SimpleAdapter(
                     News.this, contactList,
-                    R.layout.list_item, new String[]{"url", "title",
+                    R.layout.list_item2, new String[]{"url", "title",
                     "description","url"}, new int[]{R.id.title,
-                    R.id.title, R.id.desc,R.id.unique_id});
+                    R.id.title, R.id.desc,R.id.match_id});
 
             lv.setAdapter(adapter);
 

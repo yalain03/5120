@@ -3,7 +3,9 @@
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
 android:orientation="vertical"
-android:padding="10dp">
+android:paddingTop="150dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
 <ImageButton
     android:id="@+id/button"
